@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🏛️%3C/text%3E%3C/svg%3E">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit 2 — Then and Now</title>
+<style>
+:root{--bg:#fff8ec;--ink:#1d2b3a;--blue:#1565c0;--green:#2e7d32;--orange:#e65100;--purple:#6a1b9a;--line:#d9d2c3}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);font-size:18px;line-height:1.5}
+header{background:var(--blue);color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+header h1{font-size:20px;margin:0}
+main{max-width:760px;margin:0 auto;padding:18px}
+button{font:inherit;min-height:48px;padding:10px 18px;border-radius:14px;border:0;background:var(--orange);color:#fff;font-weight:700;cursor:pointer;margin:4px}
+button:disabled{cursor:default}
+button.alt{background:#fff;color:var(--blue);border:2px solid var(--blue)}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #ffb300;outline-offset:2px}
+.card{background:#fff;border-radius:18px;padding:18px;margin:12px 0;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.opt{display:block;width:100%;text-align:left;background:#fff;color:var(--ink);border:2px solid var(--line);margin:6px 0;font-weight:600}
+.opt.right{background:#c8e6c9;border-color:var(--green)}
+.opt.wrong{background:#ffcdd2;border-color:#c62828}
+.fb{padding:10px 14px;border-radius:12px;margin-top:10px;font-weight:600}
+.fb:empty{display:none}
+.ok{background:#e8f5e9;color:var(--green)}.no{background:#ffebee;color:#c62828}
+.bar{height:12px;background:var(--line);border-radius:8px;overflow:hidden}
+.bar div{height:100%;background:var(--green);transition:width .3s}
+.big{font-size:44px;text-align:center}
+.c-s{color:var(--blue);font-weight:700}.c-d{color:var(--purple);font-weight:700}.c-b{color:var(--green);font-weight:700}.c-p{color:var(--orange);font-weight:700}
+textarea{width:100%;min-height:180px;font:inherit;padding:12px;border-radius:12px;border:2px solid var(--line)}
+input[type=text]{font:inherit;padding:10px;border-radius:12px;border:2px solid var(--line);min-height:48px;width:100%}
+.flip{width:100%;min-height:140px;margin:0;background:#e3f2fd;color:var(--ink);font-size:24px;border-radius:18px;white-space:normal}
+.tl{display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:center;flex-wrap:wrap}
+.tl div{flex:1;min-width:120px;background:#eef;border-radius:12px;padding:10px}
+.note{font-size:15px;color:#555}
+table{width:100%;border-collapse:collapse;font-size:15px}
+td,th{border:1px solid var(--line);padding:6px;vertical-align:top;text-align:left}
+.spk{min-height:40px;padding:6px 12px;border-radius:12px;border:2px solid var(--blue);background:#fff;color:var(--blue);font-weight:700;cursor:pointer;margin:2px}
+.row{display:flex;gap:6px;align-items:center}.row .opt{flex:1}
+body{padding-bottom:96px}
+#spctl{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid var(--line);padding:8px;text-align:center;z-index:5}
+#spctl button{min-height:44px;font-size:16px;margin:2px}
+#spmsg{font-size:14px;color:#c62828;min-height:1em}
+#nav{position:sticky;top:0;z-index:4;background:#fff;border-bottom:2px solid var(--line);padding:8px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+#nav button{min-height:52px;font-size:17px;margin:0}
+#nav button:disabled{opacity:.4}
+.dash{color:var(--ink);background:#fff;text-align:center;width:100%;margin:0;min-height:120px;font-size:17px;border:2px solid var(--line)}
+.dash:hover{border-color:var(--blue)}
+body.listen .spk{font-size:20px;min-height:56px;background:#e3f2fd}
+@media print{#spctl{display:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{header,.noprint{display:none!important}body{background:#fff}.card{box-shadow:none}}
+</style>
+</head>
+<body>
+<header><h1>Unit 2 — Then and Now</h1><span id="hp"></span><button class="alt" data-act="lmode" aria-pressed="false" style="margin:0">🔊 Listening Mode: off</button></header>
+<nav id="nav" aria-label="Lesson navigation"><button data-act="home" aria-label="Home">🏠 Home</button><button class="alt" data-act="prev" aria-label="Previous">⬅️ Previous</button><button class="alt" data-act="next" aria-label="Next">➡️ Next</button><button class="alt" data-act="listenNow" aria-label="Listen">🔊 Listen</button><button class="alt" data-act="again" aria-label="Try again">🔄 Try Again</button></nav>
+<main id="main" tabindex="-1"></main>
+<div id="spctl"><button class="alt" data-spk="again">🔁 Listen again</button><button class="alt" data-spk="pause">⏸ Pause</button><button class="alt" data-spk="resume">▶ Resume</button><button class="alt" data-spk="stop">⏹ Stop</button><div id="spmsg" aria-live="polite"></div></div>
+
+<script>
+const $=s=>document.querySelector(s);
+const KEY='unit2-then-now-v1';
+let P={seen:{},best:null,last:null};
+try{const r=localStorage.getItem(KEY);if(r)P=Object.assign(P,JSON.parse(r));}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(P));}catch(e){}}
+const countSeen=()=>['vocab','past','g1','g2','read','write','museum','quiz'].filter(k=>P.seen[k]).length;
+
+const VOCAB=[
+{w:'computer',i:'💻',m:'a machine you use to write, search, and play games',e:'We use a computer at school.'},
+{w:'keyboard',i:'⌨️',m:'the buttons you press to type letters and numbers',e:'Press the keys on the keyboard.'},
+{w:'mouse',i:'🖱️',m:'a small device you move to point at things on a screen',e:'Use the mouse to open the file.'},
+{w:'tablet',i:'📱',m:'a flat, portable device you touch with your fingers',e:'She reads stories on her tablet.'},
+{w:'email',i:'📧',m:'a message sent electronically from one person to another',e:'I sent an email to my teacher.'},
+{w:'letter',i:'✉️',m:'a written message sent in an envelope by post',e:'He wrote a letter to his grandmother.'},
+{w:'telephone',i:'☎️',m:'a device used to talk to people who are far away',e:'The old telephone was in the hall.'},
+{w:'mobile phone',i:'📲',m:'a small phone you can carry in your pocket',e:'My mobile phone has a camera.'},
+{w:'CD player',i:'💿',m:'a machine that plays music from a CD',e:'Dad had a CD player in his car.'},
+{w:'carry',i:'🎒',m:'to hold something and move it from one place to another',e:'I carry my books to school.'},
+{w:'call',i:'📞',m:'to phone someone',e:'I will call you after school.'},
+{w:'study',i:'📚',m:'to learn about something by reading and practising',e:'We study English every day.'}
+];
+const ACTIONS=['post a letter','send an email','make a face','tell a story','hold a pen','win a race','make a sandwich','tie a shoelace'];
+
+const REG={};
+function mc(id,q,opts,a,e){REG[id]={a,e};return `<div class="card" data-mc="${id}"><p><b>${q}</b> ${ls(q)}</p>${opts.map((o,k)=>`<div class="row"><button class="opt" data-act="pick" data-id="${id}" data-k="${k}">${o}</button>${ls(o)}</div>`).join('')}<div class="fb" aria-live="polite"></div></div>`;}
+const TF=(id,q,ans,e)=>mc(id,q,['True','False'],ans?0:1,e);
+
+const FC={i:0,f:false};
+function fcHtml(){const v=VOCAB[FC.i];return `<div class="card"><p>Flashcard ${FC.i+1} of ${VOCAB.length} <span class="note">(tap the card to flip)</span></p><button class="flip" data-act="flip" aria-label="Flip flashcard">${FC.f?`<span>${v.m}</span>`:`<span>${v.i} ${v.w}</span>`}</button><p style="text-align:center">${ls(FC.f?v.m:v.w)} <button class="alt" data-act="fc" data-d="-1">← Previous</button><button data-act="fc" data-d="1">Next →</button></p></div>`;}
+
+const VIEWS={};
+VIEWS.home=()=>`<div class="card" style="text-align:center"><div class="big" aria-hidden="true">🖥️ 📱 ⌨️ 📞</div><h2 tabindex="-1">Unit 2 — Then and Now</h2><p>Grade 5 English</p><p>Explore technology in the past and today.</p><p class="note"><b>Teacher:</b> Salem Rashid Al-Harbi<br><b>School:</b> Imam Al-Salt bin Al-Qasim Al-Kharousi Basic Education School (Grades 5–8)</p><p><button data-go="menu">Start Learning</button></p><p>Sections explored: <b>${countSeen()}/8</b>${P.best!=null?` · Best quiz: <b>${P.best}%</b>`:''}</p><div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="8" aria-valuenow="${countSeen()}"><div style="width:${countSeen()/8*100}%"></div></div><p class="note">Progress is saved only in this browser on this device. It is not synchronised across devices.</p></div>`;
+
+VIEWS.menu=()=>`<h2 tabindex="-1">Choose an activity</h2><div class="grid">${[['vocab','📚 Vocabulary Lab'],['past','⏳ Past vs Present'],['g1','🕰️ Grammar 1: Past Simple'],['g2','💪 Grammar 2: Could / Couldn’t'],['read','🔬 Reading Challenge'],['write','✍️ Writing Workshop'],['steps','🪜 Step-by-Step Writing'],['museum','🏛️ Museum Visit Report'],['quiz','🏆 Interactive Quiz'],['results','📊 Results & Progress']].map(([k,l])=>`<button class="alt" data-go="${k}">${l}</button>`).join('')}</div><p class="noprint"><button class="alt" data-act="reset">Reset progress</button></p>`;
+
+VIEWS.vocab=()=>{
+ const cards=VOCAB.map(v=>`<div class="card"><span style="font-size:32px">${v.i}</span> <b class="c-s">${v.w}</b> ${ls(v.w)}<p>${v.m}</p><p><i>e.g. ${v.e}</i> ${ls(v.e)}</p></div>`).join('');
+ const mcs=VOCAB.map((v,i)=>{const o=[v.w,VOCAB[(i+4)%12].w,VOCAB[(i+8)%12].w];const ord=[0,1,2].map(k=>o[(k+i)%3]);return mc('v'+i,`${v.i} Which word means: “${v.m}”?`,ord,ord.indexOf(v.w),`${v.w} = ${v.m}.`);}).join('');
+ const sp=[0,2,5,7,9,11].map(i=>`<div class="card"><p>${VOCAB[i].i} ${VOCAB[i].m}</p><input type="text" id="sp${i}" aria-label="Spell the word"><p><button data-act="spell" data-i="${i}">Check spelling</button></p><div class="fb" aria-live="polite"></div></div>`).join('');
+ return `<h2 tabindex="-1">Vocabulary Lab</h2><h3>Words</h3>${cards}<h3>Action phrases</h3><div class="card">${ACTIONS.map(a=>`<span class="c-p" style="margin-right:12px">${a}</span>${ls(a)}`).join('')}</div><h3>Flashcards</h3><div id="fc">${fcHtml()}</div><h3>Match the word</h3>${mcs}<h3>Spelling</h3>${sp}`;
+};
+ACT_FC=null;
+
+VIEWS.past=()=>`<h2 tabindex="-1">Past vs Present</h2>
+<div class="card"><p><b>Timeline</b></p><div class="tl"><div><b>Then (past)</b><br>letters<br>traditional telephones<br>CD players</div>→<div><b>Now (today)</b><br>email<br>mobile phones<br>tablets</div></div></div>
+<div class="grid"><div class="card"><b>Writing to a friend</b><p>Then: a letter by post. Now: an email.</p></div><div class="card"><b>Calling home</b><p>Then: a telephone in one place. Now: a mobile phone you carry.</p></div><div class="card"><b>Listening to music</b><p>Then: a CD player. Now: music on a tablet or phone.</p></div></div>
+<p class="note">These examples are illustrations created for this app. They are not claims made in the textbook.</p>
+${mc('p1','Which is the more modern way to send a message?',['a letter','an email'],1,'Email is a newer way to send messages.')}
+${mc('p2','Which device did families use in the past?',['a tablet','a telephone in the house'],1,'Many families had one telephone in one place.')}
+${mc('p3','Which is a device people carry today?',['a mobile phone','a CD player'],0,'Mobile phones are small enough to carry.')}`;
+
+VIEWS.g1=()=>`<h2 tabindex="-1">Grammar Lab 1 — Past Simple</h2>
+<div class="card"><p><b>Colour key:</b> <span class="c-s">subject</span> · <span class="c-p">past verb</span> · <span class="c-d">did / didn’t</span> · <span class="c-b">base verb</span></p>
+<p><b>Positive:</b> <span class="c-s">We</span> <span class="c-p">had</span> a phone in the house.</p>
+<p><b>Negative:</b> <span class="c-s">We</span> <span class="c-d">didn’t</span> <span class="c-b">have</span> a mobile phone.</p>
+<p><b>Question:</b> <span class="c-d">Did</span> <span class="c-s">you</span> <span class="c-b">have</span> a phone ten years ago?</p>
+<p><b>Short answers:</b> Yes, I <span class="c-d">did</span>. / No, I <span class="c-d">didn’t</span>.</p>
+<p><b>Regular verbs:</b> play → played, call → called, study → studied.</p>
+<p><b>Common irregular verbs:</b> have → had, go → went, buy → bought, write → wrote, see → saw.</p></div>
+<div class="card"><b>Important:</b> after <i>did</i> or <i>didn’t</i>, use the base verb. Say “didn’t have”, not “didn’t had”.</div>
+${mc('g1a','Yesterday we ___ a new computer.',['buy','bought','buyed'],1,'Buy is irregular: buy → bought.')}
+${mc('g1b','We ___ a phone in the house.',['had','have','haved'],0,'Have is irregular: have → had.')}
+${mc('g1c','I ___ to the cinema yesterday.',['didn’t went','didn’t go','didn’t goed'],1,'After didn’t, use the base verb: go.')}
+${mc('g1d','___ you watch TV last night?',['Did','Do','Was'],0,'Questions in the past use Did.')}
+${mc('g1e','They ___ football at school.',['played','plays','playing'],0,'Regular verbs add -ed in the past.')}
+${mc('g1f','Did you ___ the letter?',['wrote','write','written'],1,'After did, use the base verb: write.')}`;
+
+VIEWS.g2=()=>`<h2 tabindex="-1">Grammar Lab 2 — Could / Couldn’t</h2>
+<div class="card"><p><b>Timeline</b></p><div class="tl"><div>Age 1<br>✔ walk<br>✘ talk</div><div>Age 5<br>✔ ride a bike</div></div></div>
+<div class="card"><p><span class="c-s">Subject</span> + <span class="c-p">could</span> / <span class="c-p">couldn’t</span> + <span class="c-b">base verb</span></p>
+<p>When I was one, I <span class="c-p">could</span> <span class="c-b">walk</span>.</p>
+<p>I <span class="c-p">couldn’t</span> <span class="c-b">talk</span> when I was one.</p>
+<p><span class="c-p">Could</span> you <span class="c-b">ride</span> a bike when you were five?</p>
+<p>Yes, I <span class="c-p">could</span>. / No, I <span class="c-p">couldn’t</span>.</p></div>
+${mc('g2a','When I was one, I ___ walk.',['could','couldn’t','can'],0,'Could describes past ability.')}
+${mc('g2b','I ___ talk when I was one.',['could','couldn’t','did'],1,'Couldn’t describes a past ability you did not have.')}
+${mc('g2c','___ you ride a bike when you were five?',['Could','Did','Can'],0,'Questions use Could + subject + base verb.')}
+${mc('g2d','Error correction: which sentence is correct?',['I couldn’t walk when I was one.','I could walked when I was one.','I couldn’t walks when I was one.'],0,'After could or couldn’t, use the base verb.')}
+${mc('g2e','Error correction: which question is correct?',['Could you ride a bike?','Could you rode a bike?','Did you could ride a bike?'],0,'Could + subject + base verb.')}`;
+
+VIEWS.read=()=>`<h2 tabindex="-1">Reading Challenge</h2>
+<div class="card" id="rt"><h3>Phones Then and Now</h3><p><button class="spk" data-sayel="rt">🔊 Listen to the text</button></p><p>Think about your grandparents when they were children. Their house may have had one telephone, and it stayed in one place. Nobody could carry it to the garden.</p><p>Today, most families have mobile phones. They are small, light, and can take photos, too. Ten years ago, many children could not use a tablet at school. Now they study with tablets and laptops.</p><p>Technology changes quickly, but one thing stays the same: people still want to share news and stories.</p></div>
+${mc('r1','In the past, where was the telephone?',['in a pocket','in one place in the house','at school only'],1,'The text says it stayed in one place.')}
+${mc('r2','What can a mobile phone do in the text?',['only make calls','take photos','play CDs only'],1,'The text says mobile phones can take photos.')}
+${mc('r3','What is the main idea?',['Technology never changes.','Technology has changed, but people still share news.','Computers are only for adults.'],1,'The last paragraph gives the main idea.')}
+${TF('r4','True or false: Families once had one telephone in the house.',true,'The text says their house may have had one telephone.')}
+${TF('r5','True or false: Mobile phones are big and heavy.',false,'The text says they are small and light.')}
+${mc('r6','Vocabulary in context: “it stayed in one place”. What does “stayed” mean?',['moved','remained','broke'],1,'Stayed means remained in the same place.')}`;
+
+VIEWS.write=()=>`<h2 tabindex="-1">Writing Workshop: “Then and Now”</h2>
+<div class="card"><b>Model report</b> <button class="spk" data-sayel="mrt">🔊 Listen</button><div id="mrt"><p><b>Then and Now</b></p><p>Technology is very different now from the past. In this report, I compare my grandfather’s time with today.</p><p>My grandfather had a telephone in the house. It was black and heavy. He could not call anyone while he was walking outside. Today, my father has a mobile phone. He can send an email and take photos. I have a tablet, and I study with it at home.</p><p>In conclusion, technology has changed a lot. Now we can talk to people faster than before.</p></div></div>
+<div class="card"><b>Structure</b><p>Title → Introduction → Examples (past and present) → Conclusion</p><b>Sentence starters</b><ul><li>In the past, people…</li><li>Today, we can…</li><li>When my grandfather was young, he…</li><li>In conclusion, …</li></ul></div>
+<div class="card"><label for="wr"><b>Your report</b></label><textarea id="wr" placeholder="Start with the title: Then and Now"></textarea><p>Word count: <b id="wc">0</b></p></div>
+<div class="card"><b>Checklist</b>
+<label><input type="checkbox"> I used a title and capital letters at the start of sentences.</label><br>
+<label><input type="checkbox"> I used a full stop at the end of each sentence.</label><br>
+<label><input type="checkbox"> I used the past form after <i>had</i> and <i>could</i> only where correct.</label><br>
+<label><input type="checkbox"> I used did / didn’t + base verb.</label><br>
+<label><input type="checkbox"> I checked my spelling.</label></div>
+<div class="card"><p class="note">Rubric: structure (title, introduction, examples, conclusion), correct Past Simple and could/couldn’t, vocabulary, spelling and punctuation. Compare your work with your teacher’s feedback.</p><button class="alt" data-act="reveal">Reveal sample answer</button><div id="sample" hidden><p>A sample is shown above as the model. Compare your report with it, but write your own sentences.</p></div></div>`;
+
+VIEWS.museum=()=>`<h2 tabindex="-1">Writing Workshop: A Visit to the Oman Across the Ages Museum</h2>
+<div class="card" style="text-align:center"><div class="big" aria-hidden="true">🏛️ 🏺 ⛵ ☕ 🗿</div><p class="note">Teacher: Salem Rashid Al-Harbi · Imam Al-Salt bin Al-Qasim Al-Kharousi Basic Education School (Grades 5–8)</p></div>
+<div class="card"><b>Your task</b> <button class="spk" data-sayel="mtask">🔊 Listen</button><p id="mtask">Write a short report about a visit to the Oman Across the Ages Museum in Manah, Oman. Use the Past Simple (visited, saw, learned, enjoyed).</p></div>
+<div class="card"><b>Useful vocabulary</b>
+<p><b>museum</b> — a building where interesting objects are kept and shown</p>
+<p><b>exhibit</b> — an object or display shown to visitors</p>
+<p><b>history</b> — what happened in the past</p>
+<p><b>culture</b> — the traditions and way of life of a people</p>
+<p><b>traditional</b> — old and passed down from earlier generations</p>
+<p><b>ancient</b> — very old, from long ago</p>
+<p><b>dhow</b> — a traditional wooden sailing boat</p>
+<p><b>dallah</b> — a tall, traditional Arabic coffee pot</p>
+<p><b>khanjar</b> — a traditional curved dagger worn in Oman</p>
+<p><b>falaj</b> — a channel that carries water to farms</p>
+<p><b>technology</b> — machines and screens that help people, such as touch screens</p>
+<p><b>guide</b> — a person who shows visitors around</p></div>
+${mc('m1','Which word means an object shown to visitors in a museum?',['exhibit','ticket','guide'],0,'An exhibit is an object shown in a museum.')}
+<div class="card"><b>Model paragraph</b> <button class="spk" data-sayel="mpt">🔊 Listen</button><p id="mpt">Last week, I visited the Oman Across the Ages Museum in Manah with my class. The museum is in Manah, Oman, and it shows the history of our country. I saw an old dhow, traditional dallahs, and a falaj model that showed how water travelled to farms. I also saw touch screens that told stories about the past. I learned about how people in Oman lived long ago. I enjoyed the visit because I could see real objects and learn about my culture.</p></div>
+${mc('m2','Which sentence is correct?',['Last week, I visit the museum.','Last week, I visited the museum.','Last week, I visiting the museum.'],1,'Use the past form visited for last week.')}
+${mc('m3','Which sentence uses capital letters correctly?',['we visited the museum in manah.','We visited the museum in Manah.','We Visited the Museum in manah.'],1,'Start sentences and place names with capital letters.')}
+<div class="card"><b>Sentence starters</b><ul><li>Last week, I visited…</li><li>The museum is in…</li><li>I saw…</li><li>I learned about…</li><li>I enjoyed the visit because…</li></ul></div>
+<div class="card"><b>Report structure</b><p>Title → Introduction (where and when) → What I saw → What I learned → Conclusion</p></div>
+<div class="card"><label for="mw"><b>My report</b></label><textarea id="mw" placeholder="Title: A Visit to the Oman Across the Ages Museum"></textarea><p>Word count: <b id="mwc">0</b></p><p><button class="spk" data-sayval="mw">🔊 Listen to my report</button></p></div>
+<div class="card"><b>Checklist</b>
+<label><input type="checkbox"> I wrote a title and started each sentence with a capital letter.</label><br>
+<label><input type="checkbox"> I used capital letters for place names such as Oman and Manah.</label><br>
+<label><input type="checkbox"> I ended each sentence with a full stop.</label><br>
+<label><input type="checkbox"> I used a comma after “Last week”.</label><br>
+<label><input type="checkbox"> I used past verbs: visited, saw, learned, enjoyed.</label><br>
+<label><input type="checkbox"> I checked the spelling of the vocabulary words.</label></div>
+<div class="card"><b>Assessment rubric</b>
+<table><tr><th>Criteria</th><th>4 Excellent</th><th>3 Good</th><th>2 Developing</th><th>1 Beginning</th></tr>
+<tr><td>Content</td><td>Details about 3 or more exhibits and what I learned</td><td>Details about 2 exhibits</td><td>One detail</td><td>Little or no detail</td></tr>
+<tr><td>Organisation</td><td>Title, introduction, examples and conclusion in order</td><td>Most parts present</td><td>Some parts missing</td><td>No clear order</td></tr>
+<tr><td>Grammar and vocabulary</td><td>Past Simple used correctly; 3 or more vocabulary words</td><td>Mostly correct; 2 words</td><td>Several errors; 1 word</td><td>Many errors</td></tr>
+<tr><td>Mechanics</td><td>Capitals, punctuation and spelling correct</td><td>Few errors</td><td>Frequent errors</td><td>Hard to read</td></tr></table>
+<p class="note">This rubric is for self-checking and teacher feedback. The app does not mark open writing automatically.</p></div>
+<div class="card"><button class="alt" data-act="mreveal">Reveal sample answer</button> <button class="spk" data-sayel="msample">🔊 Listen</button><div id="msample" hidden><p><b>A Visit to the Oman Across the Ages Museum</b></p><p>Last week, I visited the Oman Across the Ages Museum in Manah with my class. The museum is in Manah, Oman. It is a place where we can learn about our history and culture.</p><p>First, I saw a dhow, which is a traditional wooden boat. Then I saw many dallahs, and I learned that they were used to serve coffee to guests. I also saw a falaj model and touch screens with stories about the past.</p><p>I learned about how people in Oman lived long ago and how they used water wisely.</p><p>I enjoyed the visit because I could see real objects and learn about my culture. I want to visit the museum again with my family.</p><p class="note">Compare this with your own writing. Write your own sentences.</p></div></div>`;
+const STEPVERBS=[['visit','visited'],['learn','learnt'],['see','saw'],['go','went'],['is','was'],['are','were'],['have','had'],['do','did'],['can','could'],['find','found'],['play','played'],['try','tried'],['write','wrote'],['make','made'],['take','took']];
+const ST={s:1};
+const SB={when:'Last week',verb:'I saw',det:'ancient tools',learn:'about Oman’s history',end:'It was amazing!'};
+if(P.sel)Object.assign(SB,P.sel);
+const LOCK='<div class="card">🔒 Pass the verb mastery check in Stage 2 to unlock this stage.</div>';
+const CHECKS=['Did I include the date or time of the visit?','Did I answer all four planning questions?','Did I use past-simple verbs correctly?','Did I use linking words where appropriate?','Did I begin each sentence with a capital letter?','Did I use full stops and correct spelling?','Did I include an interesting fact or an exclamation mark where suitable?'];
+function lc(s){return s.startsWith('I ')?s:s.charAt(0).toLowerCase()+s.slice(1);}
+function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+function stepSentences(){return [`${SB.when}, I visited the Oman Across the Ages Museum in Manah, Oman.`,`${SB.verb} ${SB.det}.`,`I learnt a lot ${SB.learn}.`,SB.end];}
+function stepBuild(){SB.when=$('#b-when').value;SB.verb=$('#b-verb').value;SB.det=$('#b-det').value;SB.learn=$('#b-learn').value;SB.end=$('#b-end').value;$('#b-out').innerHTML=stepSentences().map(s=>cap(s)+' '+ls(cap(s))).join('<br>');ensureP();P.sel={...SB};save();}
+const SEL=(id,label,opts,key)=>`<p><label for="${id}">${label}</label><br><select id="${id}" onchange="stepBuild()" style="font:inherit;min-height:44px;padding:6px;border-radius:10px;width:100%">${opts.map(o=>`<option${o===SB[key]?' selected':''}>${o}</option>`).join('')}</select></p>`;
+const STAGES={};
+STAGES[1]=()=>`<div class="card"><h3>Stage 1 — Learn the past-simple verbs</h3><p>The past simple describes completed actions in the past.</p><ul><li>Regular verbs usually add -ed: visit → visited, play → played.</li><li>Some verbs change completely: go → went, see → saw, write → wrote.</li><li>Could expresses past ability: “I could see old photographs.”</li></ul><p class="note">The unit page images were not available for this build, so please check which forms appear in your Class Book. Verbs not shown there are extra practice.</p></div><div class="grid">${STEPVERBS.map(([b,p])=>`<div class="card"><b class="c-s">${b}</b> ${ls(b)} → <b class="c-p">${p}</b> ${ls(p)}</div>`).join('')}</div>`;
+STAGES[2]=()=>`<div class="card"><h3>Stage 2 — Practise before writing</h3><p class="note">Choose an answer. Wrong answers can be retried.</p></div>
+<h3>1. Match the base verb with its past form</h3>
+${mc('sp1','Past form of “go”?',['goed','went','gone'],1,'Go changes completely: go → went.')}
+${mc('sp2','Past form of “see”?',['seed','saw','seen'],1,'See changes completely: see → saw.')}
+${mc('sp3','Past form of “learn”?',['learns','learnt','learning'],1,'Learn → learnt is the form used in this app.')}
+<h3>2. Choose the correct verb</h3>
+${mc('sp4','Yesterday we ___ to the museum.',['go','went','goes'],1,'Use the past form with a past time word.')}
+${mc('sp5','I ___ old photographs in the hall.',['see','saw','sees'],1,'Saw is the past form of see.')}
+<h3>3. Change present to past</h3>
+${mc('sp6','Present: “I visit the museum.” Past:',['I visited the museum.','I visit the museum yesterday.','I visiting the museum.'],0,'Regular verbs add -ed: visit → visited.')}
+<h3>4. Complete sentences about a museum visit</h3>
+${mc('sp7','The guide ___ very friendly.',['was','were','is'],0,'Use was with he, she, it, and singular subjects.')}
+<h3>5. Arrange the words</h3>
+${mc('sp8','Which sentence is in the correct order?',['We went to the museum.','We to went the museum.','Went we the museum to.'],0,'Subject, then past verb, then the rest.')}
+<h3>Mastery check</h3><p class="note">Answer these three correctly to unlock Stages 4 to 7.</p>
+${mc('mk1','Past form of “find”?',['finded','found','finds'],1,'Find is irregular: find → found.')}
+${mc('mk2','Past form of “take”?',['takes','took','taked'],1,'Take is irregular: take → took.')}
+${mc('mk3','I ___ a photo of the model boat.',['take','took','taking'],1,'Past simple: took.')}
+<p><button data-act="mcheck">Check my mastery</button></p><div id="mkres" class="fb" aria-live="polite"></div>`;
+STAGES[3]=()=>`<div class="card"><h3>Stage 3 — Paragraph structure</h3>
+<p><b>Part 1 — When and where did you go?</b><br>Last week, I visited the Oman Across the Ages Museum in Manah, Oman. ${ls('Last week, I visited the Oman Across the Ages Museum in Manah, Oman.')}</p>
+<p><b>Part 2 — What was special about it?</b><br>It was a beautiful and modern building. ${ls('It was a beautiful and modern building.')}</p>
+<p><b>Part 3 — What could you see and do there?</b><br>I saw ancient tools, old photographs, paintings and model boats. I could learn about Oman’s history. ${ls('I saw ancient tools, old photographs, paintings and model boats. I could learn about Oman’s history.')}</p>
+<p><b>Part 4 — What did you learn?</b><br>I learnt a lot about Oman’s history and culture. It was an amazing visit! ${ls('I learnt a lot about Oman’s history and culture. It was an amazing visit!')}</p>
+<p class="note">These sentences are examples written for this app, not direct quotations from the textbook.</p></div>`;
+STAGES[4]=()=>`<div class="card"><h3>Stage 4 — Build sentences with guidance</h3><p><b>Writing prompt:</b> Write a report about your visit to the Oman Across the Ages Museum in Manah, Oman.</p>
+${SEL('b-when','1. When did you visit?',['Yesterday','Last week','Last month'],'when')}
+${SEL('b-verb','2. What could you do?',['I saw','I could see'],'verb')}
+${SEL('b-det','3. What did you see?',['ancient tools','old photographs','paintings','model boats'],'det')}
+${SEL('b-learn','4. What did you learn?',['about Oman’s history','about Oman’s culture'],'learn')}
+${SEL('b-end','5. Choose an ending.',['It was amazing!','I enjoyed my visit.'],'end')}
+<div class="fb ok" id="b-out">${stepSentences().map(s=>cap(s)+' '+ls(cap(s))).join('<br>')}</div></div>`;
+STAGES[5]=()=>{const [s1,s2,s3,s4]=stepSentences();const para=`First, ${lc(s1)} Then, ${lc(s2)} Also, ${lc(s3)} Finally, ${lc(s4)}`;return `<div class="card"><h3>Stage 5 — Organise into a paragraph</h3><p class="note">Linking words (First, Then, Also, Finally) start a sentence and are followed by a comma.</p><div class="fb ok">${para} ${ls(para)}</div><p class="note">Check the capital letters, full stops, and past-simple verbs.</p></div>`;};
+STAGES[6]=()=>`<div class="card"><h3>Stage 6 — Write on your own</h3><p><b>Writing prompt:</b> Write a report about a museum or another interesting place you visited. ${ls('Write a report about a museum or another interesting place you visited.')}</p><p><b>Plan your answers:</b></p><ul><li>When and where did you go?</li><li>What was special about it?</li><li>What could you see and do there?</li><li>What did you learn?</li></ul>${ls('When and where did you go? What was special about it? What could you see and do there? What did you learn?')}<details><summary>Hint: sentence starters</summary><ul><li>Last week, I visited…</li><li>The place is in…</li><li>I saw…</li><li>I learnt about…</li><li>I enjoyed the visit because…</li></ul>${ls('Last week, I visited. The place is in. I saw. I learnt about. I enjoyed the visit because.')}</details></div><div class="card"><label for="stw"><b>My paragraph</b></label><textarea id="stw" oninput="document.getElementById('stwc').textContent=this.value.split(/\\s+/).filter(Boolean).length"></textarea><p>Word count: <b id="stwc">0</b></p><p><button class="spk" data-sayval="stw">🔊 Listen to my paragraph</button></p></div>`;
+STAGES[7]=()=>`<div class="card"><h3>Stage 7 — Check and improve</h3><p class="note">This is a self-check. Your teacher gives the final mark.</p>${CHECKS.map(c=>`<label style="display:block;margin:6px 0"><input type="checkbox" class="stc"> ${c}</label>`).join('')}<p><button data-act="stcheck">Check my writing</button></p><div id="stres" class="fb" aria-live="polite"></div></div><div class="card"><b>Rubric</b><table><tr><th>Level</th><th>Ticks</th><th>Feedback</th></tr><tr><td>Excellent</td><td>7</td><td>Clear, organised, and accurate.</td></tr><tr><td>Good</td><td>5 or 6</td><td>Strong work. Check the items you missed.</td></tr><tr><td>Keep practising</td><td>0 to 4</td><td>Go back to Stages 2 and 5, then revise your paragraph.</td></tr></table></div>`;
+function stepPage(){const s=ST.s;return `<h2 tabindex="-1">Step-by-Step Writing</h2><div class="bar"><div style="width:${s/7*100}%"></div></div><p class="note">Stage ${s} of 7 · Verb mastery: ${P.mastery?'passed ✔':'not yet passed'}</p><p>${[1,2,3,4,5,6,7].map(n=>`<button class="${n===s?'':'alt'}" data-act="stage" data-s="${n}">${n}</button>`).join('')}</p>${s>=4&&!P.mastery?LOCK:STAGES[s]()}`;}
+VIEWS.steps=()=>stepPage();
+VIEWS.quiz=()=>{QS={i:0,score:0,wrong:[],sel:null};return quizHtml();};
+VIEWS.results=()=>{const L=P.last;if(!L)return `<div class="card"><h2 tabindex="-1">Results</h2><p>No quiz yet. Take the quiz to see your results.</p><button data-go="quiz">Take the quiz</button></div>`;
+ const topics=[...new Set(L.wrong.map(w=>w.t))];
+ return `<div class="card" id="rep"><h2 tabindex="-1">Your Results</h2><p class="big">${L.score}/${L.total}</p><p style="text-align:center">${L.pct}% correct</p><p>✔ Correct: ${L.score} · ✘ Incorrect: ${L.total-L.score}</p><p><b>Topics to review:</b> ${topics.length?topics.join(', '):'None. Great work!'}</p><button data-act="retry">Retry Quiz</button><button class="alt noprint" data-act="print">Print Report</button></div>
+ ${L.wrong.length?`<div class="card"><h3>Review your mistakes</h3>${L.wrong.map(w=>`<p><b>${w.q}</b><br>Your answer: <span class="c-p">${w.yours}</span><br>Correct answer: <span class="c-b">${w.right}</span><br>${w.e}</p>`).join('')}</div>`:''}
+ <p class="note">Best quiz score on this device: ${P.best}%. Progress is saved in this browser only.</p>`;};
+
+const QZ=[
+{t:'Vocabulary',q:'Which device lets you type letters and numbers?',o:['mouse','keyboard','tablet'],a:1,e:'The keyboard has the buttons you press to type.'},
+{t:'Vocabulary',q:'Which word means “to phone someone”?',o:['carry','study','call'],a:2,e:'Call means to phone someone.'},
+{t:'Vocabulary',q:'Which phrase means “to write a message on paper and post it”?',o:['send an email','post a letter','win a race'],a:1,e:'You post a letter by mail.'},
+{t:'Past Simple',q:'Last year we ___ a new tablet.',o:['buy','bought','buyed'],a:1,e:'Buy is irregular: buy → bought.'},
+{t:'Past Simple',q:'I ___ to the shop yesterday.',o:['didn’t went','didn’t go','didn’t goed'],a:1,e:'After didn’t, use the base verb: go.'},
+{t:'Past Simple',q:'___ you have a phone ten years ago?',o:['Did','Do','Were'],a:0,e:'Past questions use Did.'},
+{t:'Could / couldn’t',q:'When I was one, I ___ walk.',o:['couldn’t','could','can'],a:1,e:'Could describes past ability.'},
+{t:'Could / couldn’t',q:'___ you ride a bike when you were five?',o:['Did','Could','Can'],a:1,e:'Questions use Could + subject + base verb.'},
+{t:'Reading',q:'In the reading text, what can a mobile phone do?',o:['only make calls','take photos','play CDs only'],a:1,e:'The text says mobile phones can take photos.'},
+{t:'Sentence correction',q:'Choose the correct sentence.',o:['She didn’t liked the film.','She didn’t like the film.','She didn’t likes the film.'],a:1,e:'After didn’t, use the base verb: like.'},
+{t:'Sentence correction',q:'Choose the correct sentence.',o:['I could rode a bike at five.','I could ride a bike at five.','I couldn’t rides a bike at five.'],a:1,e:'After could or couldn’t, use the base verb: ride.'}
+];
+let QS={i:0,score:0,wrong:[],sel:null};
+function quizHtml(){const q=QZ[QS.i];return `<h2 tabindex="-1">Interactive Quiz</h2><div class="card"><p>Question ${QS.i+1} of ${QZ.length} · <b>${q.t}</b> · Score: ${QS.score}</p><div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="${QZ.length}" aria-valuenow="${QS.i}"><div style="width:${QS.i/QZ.length*100}%"></div></div><p style="margin-top:14px"><b>${q.q}</b> ${ls(q.q)}</p>${q.o.map((o,k)=>`<button class="opt" data-act="qpick" data-k="${k}">${o}</button>`).join('')}<div class="fb" aria-live="polite"></div><div id="qn"></div></div>`;}
+
+const SPK={ok:('speechSynthesis' in window)&&('SpeechSynthesisUtterance' in window),voice:null,last:''};
+const NOSPEECH='Read-aloud is not supported on this device or browser. The written text is still available.';
+function spkMsg(t){const m=document.getElementById('spmsg');if(m)m.textContent=t;}
+function pickVoice(){try{const v=speechSynthesis.getVoices();SPK.voice=v.find(x=>/^en[-_]GB/i.test(x.lang))||v.find(x=>/^en/i.test(x.lang))||null;}catch(e){}}
+function ls(t){return `<button class="spk" data-say="${encodeURIComponent(t)}" aria-label="Listen">🔊 Listen</button>`;}
+function say(t){if(!SPK.ok){spkMsg(NOSPEECH);return;}
+ if(!t){spkMsg('There is nothing to read yet. Write something first.');return;}
+ speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-GB';if(SPK.voice)u.voice=SPK.voice;u.rate=0.9;SPK.last=t;spkMsg('');speechSynthesis.speak(u);}
+if(SPK.ok){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}else{setTimeout(()=>spkMsg(NOSPEECH),0);}
+document.addEventListener('click',e=>{
+ const s=e.target.closest('.spk');
+ if(s){let t='';
+  if(s.dataset.say)t=decodeURIComponent(s.dataset.say);
+  else if(s.dataset.sayel){const el=document.getElementById(s.dataset.sayel);if(el){const c=el.cloneNode(true);c.querySelectorAll('button').forEach(b=>b.remove());t=c.textContent;}}
+  else if(s.dataset.sayval){const el=document.getElementById(s.dataset.sayval);if(el)t=el.value;}
+  say(t.replace(/\s+/g,' ').trim());return;}
+ const c=e.target.closest('[data-spk]');
+ if(c){const k=c.dataset.spk;if(!SPK.ok){spkMsg(NOSPEECH);return;}
+  if(k==='again')say(SPK.last);else if(k==='pause')speechSynthesis.pause();else if(k==='resume')speechSynthesis.resume();else speechSynthesis.cancel();}
+});
+let CUR='home';
+function ensureP(){P.done=P.done||{};P.ok=P.ok||{};P.drafts=P.drafts||{};}
+const PATH=[
+{t:'Learn the verbs',k:'steps:1'},{t:'Understand the past simple',k:'g1'},{t:'Listen to words and sentences',k:'listen'},{t:'Practise choosing the correct verbs',k:'steps:2'},{t:'Build sentences',k:'steps:4'},{t:'Organise sentences into a paragraph',k:'steps:5'},{t:'Write a museum paragraph',k:'museum'},{t:'Check and improve',k:'steps:7'}];
+const SEQ=[{k:'vocab',t:'Words'},{k:'steps:1',t:'Learn the verbs'},{k:'past',t:'Past vs present'},{k:'g1',t:'Past simple'},{k:'g2',t:'Could / couldn’t'},{k:'listen',t:'Listen'},{k:'steps:2',t:'Choose verbs'},{k:'read',t:'Reading'},{k:'steps:4',t:'Build sentences'},{k:'steps:5',t:'Organise paragraph'},{k:'museum',t:'Museum paragraph'},{k:'steps:7',t:'Check and improve'},{k:'quiz',t:'Quiz'},{k:'results',t:'Results'}];
+const CARDS=[['📚','Vocabulary and Past-Simple Verbs','vocab'],['📖','Grammar','past'],['🔊','Listening and Pronunciation','listen'],['✏️','Sentence Building','steps:4'],['🧩','Interactive Practice','steps:2'],['📝','Guided Paragraph Writing','museum'],['✅','Check and Improve','steps:7']];
+const LISTEN_SENTENCES=['I saw ancient tools.','We went to the museum.','I could see old photographs.','I visited the museum last week.','It was amazing!','She made a model boat.'];
+function seqIndex(k){return SEQ.findIndex(s=>s.k===k);}
+function navUpdate(){const i=seqIndex(CUR);const n=document.querySelector('#nav [data-act="next"]');if(n)n.disabled=i>=SEQ.length-1;}
+function restore(){ensureP();const d=P.drafts;
+ ['wr','mw','stw'].forEach(id=>{const el=document.getElementById(id);if(el&&d[id]!=null){el.value=d[id];const n=document.getElementById({wr:'wc',mw:'mwc',stw:'stwc'}[id]);if(n)n.textContent=el.value.split(/\s+/).filter(Boolean).length;}});
+ ['b-when','b-verb','b-det','b-learn','b-end'].forEach((id,j)=>{const el=document.getElementById(id);if(el)el.value=SB[['when','verb','det','learn','end'][j]];});
+ document.querySelectorAll('[data-mc]').forEach(box=>{const id=box.dataset.mc;const r=REG[id];if(P.ok[id]==null||!r)return;box.dataset.done=1;
+  box.querySelectorAll('.opt').forEach((b,j)=>{b.disabled=true;if(j===r.a)b.classList.add('right');});
+  const fb=box.querySelector('.fb');if(fb){fb.className='fb ok';fb.innerHTML='✔ Correct! '+r.e+' '+ls('Correct! '+r.e);}});
+}
+function goNav(k){ensureP();CUR=k;if(k.startsWith('steps:'))ST.s=+k.split(':')[1];
+ if(k!=='home'&&k!=='menu'&&k!=='results'){P.seen[k.split(':')[0]]=true;save();}
+ $('main').innerHTML=k.startsWith('steps:')?stepPage():VIEWS[k]();
+ restore();$('#hp').textContent='Grade 5 English · '+countSeen()+'/8';navUpdate();window.scrollTo(0,0);$('main').focus();}
+document.addEventListener('input',e=>{const id=e.target.id;if(id==='wr'||id==='mw'||id==='stw'){ensureP();P.drafts[id]=e.target.value;save();}});
+VIEWS.home=()=>{ensureP();const ci=PATH.findIndex(s=>!P.done[s.k]);const done=PATH.filter(s=>P.done[s.k]).length;
+ const now=ci<0?'All steps complete 🎉':`Step ${ci+1} of 8: ${PATH[ci].t}`;
+ return `<h2 tabindex="-1">Unit 2 — Then and Now</h2><p class="note">Grade 5 English · Teacher: Salem Rashid Al-Harbi · Imam Al-Salt bin Al-Qasim Al-Kharousi Basic Education School (Grades 5–8)</p>
+<div class="card"><b>You are studying:</b> ${now}<div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="8" aria-valuenow="${done}"><div style="width:${done/8*100}%"></div></div><p class="note">${done} of 8 steps complete</p></div>
+<div class="grid">${CARDS.map(([i,t,k])=>`<button class="card dash" data-go="${k}"><span style="font-size:34px" aria-hidden="true">${i}</span><br><b>${t}</b></button>`).join('')}</div>
+<div class="card"><b>Learning steps</b><ol>${PATH.map((s,n)=>`<li>${P.done[s.k]?'✅ Done:':(n===ci?'▶️ Now:':'⬜')} ${s.t}</li>`).join('')}</ol></div>
+<p class="note">Your answers and progress are saved in this browser. Going Home does not erase your work.</p>
+<p class="noprint"><button class="alt" data-act="reset">Reset Progress</button></p>`;};
+VIEWS.listen=()=>`<h2 tabindex="-1">Listening and Pronunciation</h2><p class="note">Tap 🔊 to hear each word or sentence. Read along as you listen.</p>
+<div class="card"><b>Verbs: base form and past form</b>${STEPVERBS.map(([b,p])=>`<div class="row"><span style="flex:1"><b class="c-s">${b}</b> ${ls(b)} → <b class="c-p">${p}</b> ${ls(p)}</span></div>`).join('')}</div>
+<div class="card"><b>Example sentences</b>${LISTEN_SENTENCES.map(s=>`<div class="row"><span style="flex:1">${s}</span>${ls(s)}</div>`).join('')}</div>`;
+const ACT={};
+ACT.pick=t=>{const id=t.dataset.id,k=+t.dataset.k,r=REG[id],box=t.closest('[data-mc]'),fb=box.querySelector('.fb');if(box.dataset.done)return;
+ if(k===r.a){box.dataset.done=1;ensureP();P.ok[id]=1;save();box.querySelectorAll('.opt').forEach(b=>b.disabled=true);t.classList.add('right');fb.className='fb ok';fb.innerHTML='✔ Correct! '+r.e+' '+ls('Correct! '+r.e);}
+ else{t.classList.add('wrong');t.disabled=true;fb.className='fb no';fb.innerHTML='Not quite. Try another answer. '+ls('Not quite. Try another answer.');}};
+ACT.flip=()=>{FC.f=!FC.f;$('#fc').innerHTML=fcHtml();};
+ACT.fc=t=>{FC.i=(FC.i+(+t.dataset.d)+VOCAB.length)%VOCAB.length;FC.f=false;$('#fc').innerHTML=fcHtml();};
+ACT.spell=t=>{const i=+t.dataset.i,v=VOCAB[i],val=$('#sp'+i).value.trim().toLowerCase(),fb=t.closest('.card').querySelector('.fb');
+ if(!val){fb.className='fb no';fb.textContent='Please type a word first.';return;}
+ if(val===v.w.toLowerCase()){fb.className='fb ok';fb.textContent='✔ Correct spelling!';}
+ else{fb.className='fb no';fb.textContent='Check your spelling and try again.';}};
+ACT.reveal=()=>{$('#sample').hidden=false;};
+ACT.qpick=t=>{if(QS.sel!==null)return;const k=+t.dataset.k,q=QZ[QS.i];QS.sel=k;const box=t.closest('.card');
+ box.querySelectorAll('.opt').forEach((b,j)=>{b.disabled=true;if(j===q.a)b.classList.add('right');});
+ if(k===q.a)QS.score++;else{t.classList.add('wrong');QS.wrong.push({q:q.q,yours:q.o[k],right:q.o[q.a],e:q.e,t:q.t});}
+ const fb=box.querySelector('.fb');const ft=(k===q.a?'Correct! ':'Not quite. ')+q.e;fb.className='fb '+(k===q.a?'ok':'no');fb.innerHTML=ft+' '+ls(ft);
+ box.querySelector('#qn').innerHTML=`<button data-act="qnext">${QS.i<QZ.length-1?'Next question →':'See my results'}</button>`;};
+ACT.qnext=()=>{QS.i++;QS.sel=null;if(QS.i>=QZ.length){const pct=Math.round(QS.score/QZ.length*100);P.last={score:QS.score,total:QZ.length,pct,wrong:QS.wrong};P.best=P.best==null?pct:Math.max(P.best,pct);save();go('results');return;}$('main').innerHTML=quizHtml();};
+ACT.mreveal=()=>{$('#msample').hidden=false;};
+ACT.lmode=t=>{const on=document.body.classList.toggle('listen');t.setAttribute('aria-pressed',on);t.textContent='🔊 Listening Mode: '+(on?'on':'off');};
+ACT.stage=t=>go('steps:'+t.dataset.s);
+ACT.home=()=>go('home');
+ACT.prev=()=>{const i=seqIndex(CUR);if(i<=0)go('home');else go(SEQ[i-1].k);};
+ACT.next=()=>{ensureP();const i=seqIndex(CUR);const locked=CUR.startsWith('steps:')&&+CUR.split(':')[1]>=4&&!P.mastery;
+ if(!locked&&PATH.some(s=>s.k===CUR)){P.done[CUR]=true;save();}
+ const j=i<0?0:i+1;if(j<SEQ.length)go(SEQ[j].k);};
+ACT.again=()=>{ensureP();document.querySelectorAll('[data-mc]').forEach(b=>{delete P.ok[b.dataset.mc];});['wr','mw','stw'].forEach(id=>{if(document.getElementById(id))delete P.drafts[id];});save();go(CUR);};
+ACT.listenNow=()=>{const c=document.getElementById('main').cloneNode(true);c.querySelectorAll('button,select,textarea,input,summary').forEach(x=>x.remove());say(c.textContent.replace(/\s+/g,' ').trim().slice(0,700));};
+ACT.mcheck=()=>{const n=document.querySelectorAll('[data-mc^="mk"][data-done]').length;const r=$('#mkres');
+ if(n>=3){P.mastery=true;save();r.className='fb ok';r.innerHTML='Mastery passed! Stages 4 to 7 are now unlocked. <p><button data-act="stage" data-s="3">Continue to Stage 3</button></p>';}
+ else{r.className='fb no';r.textContent='Answer all three mastery questions correctly first.';}};
+ACT.stcheck=()=>{const boxes=[...document.querySelectorAll('.stc')];const n=boxes.filter(b=>b.checked).length;const miss=boxes.filter(b=>!b.checked).map(b=>b.parentElement.textContent.trim());const lvl=n===7?'Excellent':n>=5?'Good':'Keep practising';const r=$('#stres');r.className='fb '+(n>=5?'ok':'no');r.innerHTML=`Level: <b>${lvl}</b> (${n} of 7 ticks).`+(miss.length?`<br>Improve: ${miss.join(' ')}`:' Excellent work!');};
+ACT.retry=()=>go('quiz');
+ACT.print=()=>window.print();
+ACT.reset=()=>{if(!confirm('Reset all progress saved in this browser?'))return;P={seen:{},best:null,last:null};save();go('home');};
+
+function go(k){return goNav(k);}
+function goOld(v){if(v!=='home'&&v!=='menu'&&v!=='results'){P.seen[v]=true;save();}
+ $('main').innerHTML=VIEWS[v]();$('#hp').textContent='Grade 5 English · '+countSeen()+'/8';window.scrollTo(0,0);$('main').focus();}
+
+document.addEventListener('click',e=>{const t=e.target.closest('[data-go],[data-act]');if(!t)return;if(t.dataset.go){go(t.dataset.go);return;}const f=ACT[t.dataset.act];if(f)f(t);});
+document.addEventListener('input',e=>{if(e.target.id==='wr'||e.target.id==='mw'){const n=e.target.value.split(/\s+/).filter(Boolean).length;$(e.target.id==='wr'?'#wc':'#mwc').textContent=n;}});
+go('home');
+</script>
+</body>
+</html>
